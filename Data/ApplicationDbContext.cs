@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using 業務報告システム.Models;
+using ReportSystem.Models;
 
-namespace 業務報告システム.Data
+namespace ReportSystem.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
@@ -11,16 +11,16 @@ namespace 業務報告システム.Data
         {
         }
 
-        public DbSet<業務報告システム.Models.Report> report { get; set; } = default;
+        public DbSet<ReportSystem.Models.Report> report { get; set; } = default;
 
-        public DbSet<業務報告システム.Models.ApplicationUser>? user { get; set; }
-        public DbSet<業務報告システム.Models.Attendance>? attendance { get; set; }
-        public DbSet<業務報告システム.Models.Todo>? todo { get; set; }
-        public DbSet<業務報告システム.Models.Feedback>? feedback { get; set; }
+        public DbSet<ReportSystem.Models.ApplicationUser>? user { get; set; }
+        public DbSet<ReportSystem.Models.Attendance>? attendance { get; set; }
+        public DbSet<ReportSystem.Models.Todo>? todo { get; set; }
+        public DbSet<ReportSystem.Models.Feedback>? feedback { get; set; }
 
-        public DbSet<業務報告システム.Models.Project>? project { get; set; }
+        public DbSet<ReportSystem.Models.Project>? project { get; set; }
 
-        public DbSet<業務報告システム.Models.UserProject>? userproject { get; set; }
+        public DbSet<ReportSystem.Models.UserProject>? userproject { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

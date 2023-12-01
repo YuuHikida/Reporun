@@ -5,39 +5,25 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using 業務報告システム.Data;
+using ReportSystem.Data;
 
 #nullable disable
 
-namespace 業務報告システム.Data.Migrations
+namespace ReportSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231106054500_initial")]
-    partial class initial
+    [Migration("20231130094423_yuu")]
+    partial class yuu
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.23")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("ApplicationUserProject", b =>
-                {
-                    b.Property<int>("ProjectsProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ProjectsProjectId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ApplicationUserProject");
-                });
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -72,7 +58,7 @@ namespace 業務報告システム.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -160,6 +146,8 @@ namespace 業務報告システム.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -168,7 +156,7 @@ namespace 業務報告システム.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -247,13 +235,16 @@ namespace 業務報告システム.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("業務報告システム.Models.Attendance", b =>
+            modelBuilder.Entity("ReportSystem.Models.Attendance", b =>
                 {
                     b.Property<int>("AttendanceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AttendanceId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AttendanceId"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -262,10 +253,13 @@ namespace 業務報告システム.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("HealthComment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("HealthRating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReportId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartTime")
@@ -275,33 +269,29 @@ namespace 業務報告システム.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("AttendanceId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ReportId")
+                        .IsUnique();
 
                     b.ToTable("attendance");
                 });
 
-            modelBuilder.Entity("業務報告システム.Models.Feedback", b =>
+            modelBuilder.Entity("ReportSystem.Models.Feedback", b =>
                 {
                     b.Property<int>("FeedbackId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeedbackId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeedbackId"));
 
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Confirm")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -322,41 +312,48 @@ namespace 業務報告システム.Data.Migrations
                     b.ToTable("feedback");
                 });
 
-            modelBuilder.Entity("業務報告システム.Models.Project", b =>
+            modelBuilder.Entity("ReportSystem.Models.Project", b =>
                 {
                     b.Property<int>("ProjectId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProjectId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProjectId"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("ProjectId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("project");
                 });
 
-            modelBuilder.Entity("業務報告システム.Models.Report", b =>
+            modelBuilder.Entity("ReportSystem.Models.Report", b =>
                 {
                     b.Property<int>("ReportId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReportId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReportId"));
 
                     b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("TommorowComment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("TomorrowComment")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("UpDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -369,17 +366,18 @@ namespace 業務報告システム.Data.Migrations
                     b.ToTable("report");
                 });
 
-            modelBuilder.Entity("業務報告システム.Models.Todo", b =>
+            modelBuilder.Entity("ReportSystem.Models.Todo", b =>
                 {
                     b.Property<int>("TodoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TodoId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TodoId"));
 
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -392,7 +390,8 @@ namespace 業務報告システム.Data.Migrations
 
                     b.Property<string>("TaskName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -405,7 +404,22 @@ namespace 業務報告システム.Data.Migrations
                     b.ToTable("todo");
                 });
 
-            modelBuilder.Entity("業務報告システム.Models.ApplicationUser", b =>
+            modelBuilder.Entity("ReportSystem.Models.UserProject", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ProjectId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("userproject");
+                });
+
+            modelBuilder.Entity("ReportSystem.Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -417,22 +431,10 @@ namespace 業務報告システム.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasDiscriminator().HasValue("ApplicationUser");
-                });
-
-            modelBuilder.Entity("ApplicationUserProject", b =>
-                {
-                    b.HasOne("業務報告システム.Models.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectsProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("業務報告システム.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -486,24 +488,28 @@ namespace 業務報告システム.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("業務報告システム.Models.Attendance", b =>
+            modelBuilder.Entity("ReportSystem.Models.Attendance", b =>
                 {
-                    b.HasOne("業務報告システム.Models.ApplicationUser", "User")
+                    b.HasOne("ReportSystem.Models.ApplicationUser", null)
                         .WithMany("Attendances")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("ReportSystem.Models.Report", "Report")
+                        .WithOne("Attendance")
+                        .HasForeignKey("ReportSystem.Models.Attendance", "ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Report");
                 });
 
-            modelBuilder.Entity("業務報告システム.Models.Feedback", b =>
+            modelBuilder.Entity("ReportSystem.Models.Feedback", b =>
                 {
-                    b.HasOne("業務報告システム.Models.ApplicationUser", null)
+                    b.HasOne("ReportSystem.Models.ApplicationUser", null)
                         .WithMany("Feedbacks")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("業務報告システム.Models.Report", "Report")
+                    b.HasOne("ReportSystem.Models.Report", "Report")
                         .WithMany()
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -512,9 +518,9 @@ namespace 業務報告システム.Data.Migrations
                     b.Navigation("Report");
                 });
 
-            modelBuilder.Entity("業務報告システム.Models.Report", b =>
+            modelBuilder.Entity("ReportSystem.Models.Report", b =>
                 {
-                    b.HasOne("業務報告システム.Models.ApplicationUser", "User")
+                    b.HasOne("ReportSystem.Models.ApplicationUser", "User")
                         .WithMany("Reports")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -523,9 +529,9 @@ namespace 業務報告システム.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("業務報告システム.Models.Todo", b =>
+            modelBuilder.Entity("ReportSystem.Models.Todo", b =>
                 {
-                    b.HasOne("業務報告システム.Models.ApplicationUser", "User")
+                    b.HasOne("ReportSystem.Models.ApplicationUser", "User")
                         .WithMany("Todos")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -534,7 +540,37 @@ namespace 業務報告システム.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("業務報告システム.Models.ApplicationUser", b =>
+            modelBuilder.Entity("ReportSystem.Models.UserProject", b =>
+                {
+                    b.HasOne("ReportSystem.Models.Project", "Project")
+                        .WithMany("UserProjects")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReportSystem.Models.ApplicationUser", "User")
+                        .WithMany("UserProjects")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ReportSystem.Models.Project", b =>
+                {
+                    b.Navigation("UserProjects");
+                });
+
+            modelBuilder.Entity("ReportSystem.Models.Report", b =>
+                {
+                    b.Navigation("Attendance")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ReportSystem.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Attendances");
 
@@ -543,6 +579,8 @@ namespace 業務報告システム.Data.Migrations
                     b.Navigation("Reports");
 
                     b.Navigation("Todos");
+
+                    b.Navigation("UserProjects");
                 });
 #pragma warning restore 612, 618
         }

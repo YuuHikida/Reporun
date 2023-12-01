@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "業務報告システム", "業務報告システム.csproj", "{9330A73A-93FC-49B5-A2D2-0024B74B47BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "業務報告システム", "業務報告システム.csproj", "{9330A73A-93FC-49B5-A2D2-0024B74B47BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -43,20 +43,29 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Home}/{id?}");
 app.MapRazorPages();
-
-using (var scope = app.Services.CreateScope())
+//↓ ASP.NET Core のIdentityを使用して役割を作成するコードっぽい
+try
 {
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-    var roles = new[] { "Admin", "Manager", "Member" };
-
-    foreach (var role in roles)
+    using (var scope = app.Services.CreateScope())
     {
-        if (!await roleManager.RoleExistsAsync(role))
-            await roleManager.CreateAsync(new IdentityRole(role));
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
+        var roles = new[] { "Admin", "Manager", "Member" };
+
+        foreach (var role in roles)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+                await roleManager.CreateAsync(new IdentityRole(role));
+        }
     }
 }
+catch (Exception ex)
+{
+    // 例外が発生した場合の処理
+    // エラーメッセージをログに記録するなど、適切な例外処理を行う
+    Console.WriteLine($"例外が発生しました: {ex.Message}");
+}
+
 
 using (var scope = app.Services.CreateScope())
 {
@@ -64,7 +73,7 @@ using (var scope = app.Services.CreateScope())
 
     string email = "admin@admin.com";
     string password = "Admin1234,";
-
+    try { 
     if (await userManager.FindByEmailAsync(email) == null)
     {
 
@@ -79,7 +88,10 @@ using (var scope = app.Services.CreateScope())
         await userManager.CreateAsync(user, password);
 
         await userManager.AddToRoleAsync(user, "Admin");
+        }
+    }catch(Exception Ex)
+    {
+        Console.WriteLine("error:{Ex}");
     }
 }
-
 app.Run();
