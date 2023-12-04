@@ -572,9 +572,15 @@ namespace ReportSystem.Controllers
         {
             try
             {
+                //↓ログインしているユーザーを識別する
                 var loginUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                /*↓Entity Framework Coreを利用しDBへSQLを書いている
+                        IncludeメソッドはuserテーブルからReportsプロパティを読み込むように指示している
+                 */
                 var Re = _context.user.Include(x => x.Reports).Where(x => x.Id.Equals(loginUserId)).ToList();
                 var At = _context.report.Include(x => x.Attendance).Where(x => x.UserId.Equals(loginUserId)).OrderByDescending(x => x.Date).FirstOrDefault();
+                
+                //reportがないユーザーで新気report報告を押すとatがnullというerrorが出る
                 int startHour = At.Attendance.StartTime.Hour;
                 int startMinute = At.Attendance.StartTime.Minute;
                 int endHour = At.Attendance.EndTime.Hour;
@@ -587,7 +593,7 @@ namespace ReportSystem.Controllers
             }
             catch(Exception e)
             {
-                
+                Console.WriteLine($"これみよ:{e}") ;
             }
             return View();
         }

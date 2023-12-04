@@ -12,8 +12,8 @@ using ReportSystem.Data;
 namespace ReportSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231130094423_yuu")]
-    partial class yuu
+    [Migration("20231201080259_YUU")]
+    partial class YUU
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -8,7 +8,7 @@ using ReportSystem.Data;
 
 #nullable disable
 
-namespace ReportSystem.Data.Migrations
+namespace ReportSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
