@@ -575,12 +575,22 @@ namespace ReportSystem.Controllers
                 //↓ログインしているユーザーを識別する
                 var loginUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 /*↓Entity Framework Coreを利用しDBへSQLを書いている
-                        IncludeメソッドはuserテーブルからReportsプロパティを読み込むように指示している
-                 */
+                        IncludeメソッドはuserテーブルからReportsプロパティを読み込むように指示している*/
                 var Re = _context.user.Include(x => x.Reports).Where(x => x.Id.Equals(loginUserId)).ToList();
+                //LINQ
                 var At = _context.report.Include(x => x.Attendance).Where(x => x.UserId.Equals(loginUserId)).OrderByDescending(x => x.Date).FirstOrDefault();
                 
-                //reportがないユーザーで新気report報告を押すとatがnullというerrorが出る
+                //もし昨日のreport(出退勤時間)が存在しなかった場合のデフォルト値記述
+                if (At==null)
+                {
+                    ViewBag.StartHour = 9;
+                    ViewBag.StartMinute = 0;
+                    ViewBag.EndHour = 18;
+                    ViewBag.EndMinute = 0;
+
+                    return View();
+                }
+
                 int startHour = At.Attendance.StartTime.Hour;
                 int startMinute = At.Attendance.StartTime.Minute;
                 int endHour = At.Attendance.EndTime.Hour;

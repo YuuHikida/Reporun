@@ -14,6 +14,8 @@ namespace ReportSystem.Models
         public string LastName { get; set; }
 
         public string? Role {  get; set; }
+        //Icon画像埋め込み用の新たな変数
+        public string? icon { get; set; }
 
         //public List<Project> Projects { get; set; } = new List<Project>();
 

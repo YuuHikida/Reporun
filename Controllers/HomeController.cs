@@ -39,7 +39,7 @@ namespace ReportSystem.Controllers
         {
             return View();
         }
-
+        
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(string[] search) {
 
@@ -159,7 +159,7 @@ namespace ReportSystem.Controllers
                 return View(userIndex);
 
         }
-
+        //Adminのuser
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id)
         {
