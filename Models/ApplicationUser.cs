@@ -19,6 +19,8 @@ namespace ReportSystem.Models
         //public string? icon { get; set; }
         [Column(TypeName = "varbinary(MAX)")]
         public byte[]? Icon { get; set; }
+        //新たに追加の役割
+        //public string NewRole { get; set; }
 
         //public List<Project> Projects { get; set; } = new List<Project>();
 
