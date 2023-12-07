@@ -12,8 +12,8 @@
     <div class="container-uindex">
     <h1 class="text-center">ユーザー作成</h1>
     <div class="container-form">
-            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" enctype="multipart/form-data" method="post">
+                @* ↓モデルの検証エラーを表示する要素 *@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating">
                     <input asp-for="Input.LastName" class="form-control" aria-required="true" />
@@ -54,6 +54,26 @@
                     <label>パスワード（確認）</label>
                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 </div>
+
+                @* アイコン処理 *@
+                <div class="mb-3">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <label asp-for="Input.IconFile" class="form-label">アイコン画像</label>
+                    <!-- 送信タイプをfileに、ユーザーから受け付けるファイルを画像のみに -->
+                    <input type="file" id="icon" asp-for="Input.IconFile" accept="image/*" class="form-control">
+                    <div asp-validation-for="icon" class="text-danger mt-1"></div>
+                </div>
+                
+                @*
+                アイコン処理
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-floating">
+                    <label class="control-label">アイコン</label>
+                    <input asp-for="Input.Icon" class="form-control" type="file" accept="image/*" 　autocomplete="Icon" aria-required="true" />
+                    <label>アイコン(入力がない場合デフォルトアイコンになります)</label>
+                    <span asp-validation-for="Input.Icon" class="text-danger"></span>
+                </div>
+                *@
                 <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-warning">登録</button>
             </form>
         </div>

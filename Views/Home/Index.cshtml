@@ -50,9 +50,18 @@
     <div class="container-for-grid">
 @foreach (var user in Model.Users)
 {
-    <div class="u-card">
-        <div class="u-info">
-        <h3>名前：@user.LastName @user.FirstName</h3>
+            <div class="u-card">
+                <div class="u-info">
+                    @* <p>@user.Icon</p> *@
+                    @if (!string.IsNullOrEmpty(Convert.ToBase64String(user.Icon)))
+                    {
+                        <img src="data:image/png;base64,@(Convert.ToBase64String(user.Icon))" class="rounded-circle" style="max-width: 50px;" />
+                    }
+                    else
+                    {
+                        <p>No icon</p>
+                    }
+                    <h3>名前：@user.LastName @user.FirstName</h3>
         <p>メールアドレス：@user.Email</p>
         <p>ロール：@user.Role</p>
     <p>参加中プロジェクト:</p>

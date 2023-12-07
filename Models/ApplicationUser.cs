@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 
 namespace ReportSystem.Models
@@ -14,6 +15,10 @@ namespace ReportSystem.Models
         public string LastName { get; set; }
 
         public string? Role {  get; set; }
+        //Icon画像埋め込み用の新たな変数
+        //public string? icon { get; set; }
+        [Column(TypeName = "varbinary(MAX)")]
+        public byte[]? Icon { get; set; }
 
         //public List<Project> Projects { get; set; } = new List<Project>();
 

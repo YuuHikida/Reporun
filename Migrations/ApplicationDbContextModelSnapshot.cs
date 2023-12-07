@@ -424,6 +424,9 @@ namespace ReportSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("Icon")
+                        .HasColumnType("varbinary(MAX)");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

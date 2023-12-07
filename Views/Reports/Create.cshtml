@@ -40,7 +40,7 @@
                     <div class="d-flex">
                         <div>
                             <label class="control-label">時間</label>
-                            <select name="values" class="form-control" type="time">
+                            <select name="values" class="form-control" type="time" >
                                 @for (int i = 0; i <= 23; i++)
                                 {
                                     @if(i == ViewBag.StartHour)
@@ -56,7 +56,7 @@
                         </div>
                     <div>
                         <label class="control-label">分</label>
-                        <select name="values" class="form-control" type="time">
+                        <select name="values" class="form-control" type="time" >
                             @switch(ViewBag.StartMinute)
                             {
                                 case 0:
@@ -99,7 +99,7 @@
                 <div class="d-flex">
                     <div>
                         <label class="control-label">時間</label>
-                        <select name="values" class="form-control" type="time">
+                        <select name="values" class="form-control" type="time" >
                             @for (int i = 0; i <= 23; i++)
                             {
                                 @if (i == ViewBag.EndHour)
