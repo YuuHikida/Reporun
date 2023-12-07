@@ -97,8 +97,10 @@ namespace ReportSystem.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             //↓アイコンinput!
+            //            [Display(Name = "アイコン")]
+            //         public string Icon { get; set; }
             [Display(Name = "アイコン")]
-            public string Icon { get; set; }
+            public IFormFile IconFile { get; set; }
 
         }
 
@@ -127,10 +129,11 @@ namespace ReportSystem.Areas.Identity.Pages.Account
                 user.Role = Input.Role;
 
                 //以下アイコンを受け取り成功したらuserモデルに入れる処理
-                String BeforeConvertIcon = Input.Icon;
-                user.icon = EncodeIconToBase64(BeforeConvertIcon);
-                Debug.WriteLine("ああああああああああああああああああああああああああああああああああ");
-                Debug.WriteLine($"user.icon:{user.icon}");
+                
+                Debug.WriteLine($"beforeuser.icon:{Input.IconFile}");
+                user.Icon = ConvertIFormFileToByteArray(Input.IconFile);
+                Debug.WriteLine("-----------------------------------------------------");
+                Debug.WriteLine($"Afteruser.icon:{user.Icon}");
 
                 user.UserProjects = new List<UserProject>();
                 UserProject userProject = new UserProject() { 
@@ -210,7 +213,31 @@ namespace ReportSystem.Areas.Identity.Pages.Account
             return (IUserEmailStore<ApplicationUser>)_userStore;
         }
 
-        public static  String EncodeIconToBase64(String instance)
+        //アイコン処理
+        // IFormFileをbyte[]に変換してからBase64文字列に変換する
+        public byte[] ConvertIFormFileToByteArray(IFormFile file)
+        {
+            if(file != null && file.Length > 0)
+            { 
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    file.CopyTo(ms);
+                    // MemoryStream内にあるバイト配列データ尾をすべて取得し
+                    // byte[]をBase64文字列に変換する
+                     string ittan = Convert.ToBase64String(ms.ToArray());
+                    return Convert.FromBase64String(ittan);
+                }
+            }
+            else
+                {
+                    return Convert.FromBase64String("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");
+                }
+            }
+        }
+
+
+        /*
+        public static  byte[] EncodeIconToBase64(String instance)
         {
             if(instance == null)
             {
@@ -233,5 +260,6 @@ namespace ReportSystem.Areas.Identity.Pages.Account
                 }
             }      
         }
+    */
     }
-}
+

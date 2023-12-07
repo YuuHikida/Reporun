@@ -58,9 +58,9 @@
                 @* アイコン処理 *@
                 <div class="mb-3">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <label asp-for="Input.Icon" class="form-label">アイコン画像</label>
+                    <label asp-for="Input.IconFile" class="form-label">アイコン画像</label>
                     <!-- 送信タイプをfileに、ユーザーから受け付けるファイルを画像のみに -->
-                    <input type="file" id="icon" asp-for="Input.Icon" accept="image/*" class="form-control">
+                    <input type="file" id="icon" asp-for="Input.IconFile" accept="image/*" class="form-control">
                     <div asp-validation-for="icon" class="text-danger mt-1"></div>
                 </div>
                 

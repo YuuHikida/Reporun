@@ -12,8 +12,8 @@ using ReportSystem.Data;
 namespace ReportSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231204071250_yuu")]
-    partial class yuu
+    [Migration("20231207055319_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -427,14 +427,14 @@ namespace ReportSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("Icon")
+                        .HasColumnType("varbinary(MAX)");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("icon")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
