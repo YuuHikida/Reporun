@@ -10,7 +10,7 @@
     <h1 class="text-center">ユーザー編集</h1>
 
     <div class="container-form">
-            <form method="post" action="">
+            <form method="post" enctype="multipart/form-data"  action="">
                 @if (TempData["AlertEditError"] != null)
                 {
                     <div class="text-danger">
@@ -74,7 +74,18 @@
                     <input name="values" type="password" class="form-control" autocomplete="new-password" aria-required="true" minlength="6" maxlength="100" />
                     <label>パスワード（確認用）</label>
                 </div>
-               
+
+                @* アイコン処理 *@
+                <div class="mb-3">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <p>アイコン画像</p>
+                    <!-- 送信タイプをfileに、ユーザーから受け付けるファイルを画像のみに -->
+                    @* <input asp-for="@Model.Icon" class="form-control" type="file" accept="image/*" /> *@
+                    @* <input type="file" id="icon" name="values" accept="image/*" class="form-control" /> *@
+                    <input name="iconIn" input type="file" id="icon" asp-for="@Model.Icon" accept="image/*" class="form-control">
+                    <div asp-validation-for="icon" class="text-danger mt-1"></div>
+                </div>
+
                 <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-warning">編集情報を保存</button>
             </form>
         </div>
