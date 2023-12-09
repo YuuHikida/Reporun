@@ -20,7 +20,8 @@ namespace ReportSystem.Models
         [Column(TypeName = "varbinary(MAX)")]
         public byte[]? Icon { get; set; }
         //新たに追加の役割
-        //public string NewRole { get; set; }
+        //上から会長、社長、GM,MG,UM,L
+        public string NewRole { get; set; }
 
         //public List<Project> Projects { get; set; } = new List<Project>();
 

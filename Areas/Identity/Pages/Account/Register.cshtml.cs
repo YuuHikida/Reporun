@@ -102,6 +102,10 @@ namespace ReportSystem.Areas.Identity.Pages.Account
             [Display(Name = "アイコン")]
             public IFormFile IconFile { get; set; }
 
+            [Display(Name = "役職")]
+            public string NewRole { get; set; }
+
+
         }
 
         //HTTP GET リクエスト
@@ -127,6 +131,7 @@ namespace ReportSystem.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.Role = Input.Role;
+                user.NewRole = Input.NewRole;
 
                 //以下アイコンを受け取り成功したらuserモデルに入れる処理
                 

@@ -52,6 +52,7 @@
 {
             <div class="u-card">
                 <div class="u-info">
+                    <div style="display: flex; align-items: center;">
                     @* <p>@user.Icon</p> *@
                     @if (user.Icon != null && user.Icon.Length > 0)
                     {
@@ -61,6 +62,18 @@
                     {
                         <p>No icon</p>
                     }
+                        <p style="margin-bottom: 0;">
+                            &nbsp;&nbsp;&nbsp;役職:
+                            @if (@user.NewRole != null && @user.NewRole.Length>0)
+                            {
+                                @user.NewRole
+                            }
+                            else
+                            {
+                                <span>未設定</span>
+                            }                            
+                        </p> <!-- 役職情報をアイコンの横に表示 -->
+                    </div>
                     <h3>名前：@user.LastName @user.FirstName</h3>
         <p>メールアドレス：@user.Email</p>
         <p>ロール：@user.Role</p>
