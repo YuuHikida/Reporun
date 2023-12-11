@@ -28,6 +28,10 @@
                             <li class="nav-item">
                                 <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">ユーザー一覧</a>
                             </li>
+                            <!--組織図-->
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Organization" asp-action="Index">&nbsp;&nbsp;&nbsp;組織図</a>
+                            </li>
                         } else if (User.IsInRole("Manager"))
                         {
                             <li class="nav-item">
@@ -38,6 +42,10 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-white" asp-area="" asp-controller="Todos" asp-action="MgrIndex">タスク一覧</a>
+                            </li>
+                            <!--組織図-->
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Organization" asp-action="Index">&nbsp;&nbsp;&nbsp;組織図</a>
                             </li>
                         } else if (User.IsInRole("Member"))
                         {
@@ -50,6 +58,10 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-white" asp-area="" asp-controller="Todos" asp-action="Index">タスク一覧</a>
+                            </li>
+                            <!--組織図-->
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Organization" asp-action="Index">&nbsp;&nbsp;&nbsp;組織図</a>
                             </li>
                         } 
                     </ul>
