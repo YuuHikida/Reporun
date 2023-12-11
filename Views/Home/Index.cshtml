@@ -103,7 +103,7 @@
     }
             </div>
             <div class="u-button">
-    @if (!(user.Role.Equals("Admin")))
+     @if ( !(user.Role.Equals("Admin")))
     {
         <a asp-controller="Home" asp-action="Edit" asp-route-id="@user.Id" class="btn btn-warning">編集</a>
     }

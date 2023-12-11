@@ -130,9 +130,10 @@ namespace ReportSystem.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.Role = Input.Role;
+
                 //役割(社長・会長)が被っていないかチェック
-                
-                if(DuplicateNewRoles(Input))
+
+                if (DuplicateNewRoles(Input))
                 {
                     TempData["ErrorMSG"] = "社長、会長は既にもう存在しています";
                     ViewData["Projects"] = new SelectList(_context.project, "ProjectId", "Name");
@@ -141,18 +142,20 @@ namespace ReportSystem.Areas.Identity.Pages.Account
                     //Register register = new Register();
                     //ViewBag.ErrorMessage = "aaaaaaaaaaaa";
                     //return View(Register);
-
                 }
                 else
                 {
                     //ここでuser.NewRoleに値をぶちこむ
                     user.NewRole = Input.NewRole;
+                    if (Input.Role == "Member")
+                    {
+                        user.NewRole = "Member";
+                    }
                 }
-                
-                
+
 
                 //以下アイコンを受け取り成功したらuserモデルに入れる処理
-                
+
                 Debug.WriteLine($"beforeuser.icon:{Input.IconFile}");
                 user.Icon = ConvertIFormFileToByteArray(Input.IconFile);
                 Debug.WriteLine("-----------------------------------------------------");
