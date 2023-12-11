@@ -48,24 +48,37 @@
 
                 <label class="control-label">ロール</label>
                 <select asp-for="Input.Role" class="form-control" aria-required="true" id="roleSelect" onchange="handleRoleSelection()">
-                    <option>Member</option>
+                    <option >Member</option>
                     <option>Manager</option>
                 </select>
-                
+                @*                 
+                <script>
+                    function judgementPresident() {
+                        var selectPresident = document.getElementbyId("PresidentSelect").value;
+                        var selectPresident = document.getElementbyId("chariman").value;
+
+                    }
+                </script> *@
                 <!-- 役職の選択フォーム -->
                 <div id="managerRole" style="display:none;">
                     <div class="form-group">
                         <label class="control-label">役職</label>
-                        <select asp-for="Input.NewRole" class="form-control" aria-required="true">
-                            <option>会長</option>
-                            <option>社長</option>
-                            <option>GM</option>
-                            <option>MG</option>
-                            <option>UM</option>
+                        <select asp-for="Input.NewRole" class="form-control" aria-required="true" id = PresidentSelect">
                             <option>L</option>
+                            <option>UM</option>
+                            <option>MG</option>
+                            <option>GM</option>
+                            <option>その他</option>
+                            <option >社長</option>
+                            <option >会長</option>
                         </select>
                     </div>
+                    @if(TempData["CastamError"]!=null)
+                    {
+                        <p>@TempData["CustomData"]</p>
+                    }
                 </div>
+                <p class="m-0 text-danger">TempData[ErrorMSG]</p>
 
 
 
@@ -96,17 +109,6 @@
                     <input type="file" id="icon" asp-for="Input.IconFile" accept="image/*" class="form-control">
                     <div asp-validation-for="icon" class="text-danger mt-1"></div>
                 </div>
-                
-                @*
-                アイコン処理
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-floating">
-                    <label class="control-label">アイコン</label>
-                    <input asp-for="Input.Icon" class="form-control" type="file" accept="image/*" 　autocomplete="Icon" aria-required="true" />
-                    <label>アイコン(入力がない場合デフォルトアイコンになります)</label>
-                    <span asp-validation-for="Input.Icon" class="text-danger"></span>
-                </div>
-                *@
                 <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-warning">登録</button>
             </form>
         </div>
