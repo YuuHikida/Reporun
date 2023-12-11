@@ -12,7 +12,7 @@ using ReportSystem.Data;
 namespace ReportSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231207055319_initial")]
+    [Migration("20231208073119_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -431,6 +431,10 @@ namespace ReportSystem.Migrations
                         .HasColumnType("varbinary(MAX)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewRole")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
