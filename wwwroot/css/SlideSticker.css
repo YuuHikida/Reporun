@@ -1,0 +1,36 @@
+﻿#wrapper {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 30px auto;
+}
+
+#title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+}
+
+#ticKer {
+    border-radius: 20px; /* 角丸ボーダー */
+    width: 1000px; /* 横幅 */
+    background: #D8D8D8; /* 背景色 */
+    position: relative; /* 相対配置（相対位置）*/
+    overflow: hidden; /* はみ出た部分を非表示 */
+    margin: 0 auto;
+}
+
+    #ticKer ul {
+        padding: 0; /* 内側余白*/
+        margin: 0 auto;
+    }
+
+    #ticKer li {
+        list-style-type: none; /* リストマーク なし */
+        line-height: 2.5em;
+        padding-left: 25px;
+        color: #000;
+        font-weight: 400;
+        font-size: 16px;
+        text-align: left;
+    }

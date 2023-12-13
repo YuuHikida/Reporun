@@ -11,6 +11,7 @@ using ReportSystem.Data;
 using ReportSystem.Models;
 using ReportSystem.ViewModels;
 using Project = ReportSystem.Models.Project;
+using System.Linq;
 
 namespace ReportSystem.Controllers
 {
@@ -128,6 +129,7 @@ namespace ReportSystem.Controllers
 
             var loginManagerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+
             ApplicationUser loginManager = await _userManager.FindByIdAsync(loginManagerId);
             userIndex.User = loginManager;
             var managerproject = _context.userproject.Include(x => x.Project).Where(x => x.UserId.Equals(loginManager.Id)).ToList();
@@ -156,9 +158,36 @@ namespace ReportSystem.Controllers
 
             userIndex.Users.Remove(loginManager);
 
-                return View(userIndex);
+
+            //------------ここで提出されているreport全取得からの未読だけを抽出し、モデルにぶちこむ
+            //UserIndex userIndex = new UserIndex();
+            //userIndex.Users = new List<ApplicationUser>();
+            //userIndex.Projects = new List<Models.Project>();
+
+            //必要なものは名前<applicationUser.model>:日付<Report.model>:コメント<Report.model>
+            //これをUserIndexというViewModelに入れる
+
+            userIndex.report = new List<Report>();
+            //var Duplication = _context.feedback.Where(x => x.Report(UserId))
+            //↓確認用
+           // var ittan = _context.report.Where(x=>x.User.Role=="Member").ToList();
+            //未読のみ
+            //↓reportのreportId=2がFeedbackIdsに入る
+            var feedbackIds = _context.feedback.Select(f => f.ReportId).ToList();
+            //var kidding_me = _context.report.Where(x => x.UserId.NotEquals(x.feedbacks.feedbackId).ToList());
+            var sladerAllReports = _context.report.Where(x => !feedbackIds.Contains(x.ReportId)).ToList();
+            foreach (var x in sladerAllReports)
+            {
+                userIndex.report.Add(x);
+            }
+            //var allReports = _context.report.Where(x => x.UserId.Equals(Id)).ToList();
+            //-------------------------------------------------------------------------
+
+            return View(userIndex);
 
         }
+
+
         //Adminのuser
         //getMethod
         [Authorize(Roles = "Admin")]
