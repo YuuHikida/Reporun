@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReportSystem.Data;
 using ReportSystem.Models;
+using Microsoft.EntityFrameworkCore;
+using ReportSystem.ViewModels;
+using System.Security.Claims;
 
 namespace ReportSystem.Controllers
 {
@@ -30,9 +33,27 @@ namespace ReportSystem.Controllers
         }
         
         // GET: OrganizationController
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            ApplicationUserChart applicationUserChart = new ApplicationUserChart();
+          
+            //↓ログイン中のrole
+            var loginUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loginManager = await _userManager.FindByIdAsync(loginUserId);
+            
+            //applicationUserChart.User = new ApplicationUser();
+            applicationUserChart.User = loginManager;
+
+            //組織図に必要なManager一括取得
+            var OrganizationChartDate = _context.user.ToList();
+            applicationUserChart.Users = new List<ApplicationUser>();
+
+            foreach(var a in  OrganizationChartDate)
+            {
+                applicationUserChart.Users.Add(a);
+            }
+
+            return View(applicationUserChart);
         }
 
         // GET: OrganizationController/Details/5

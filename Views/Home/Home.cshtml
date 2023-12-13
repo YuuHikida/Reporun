@@ -2,6 +2,8 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+
 @if (TempData["ProjectError"] != null)
 {
     <div class="alert alert-danger alert-dismissable fade show m-1" role="alert">
@@ -28,23 +30,38 @@
 <div class="p-3">
     @if (User.IsInRole("Admin"))
     {
-        <h1 class="text-center">あなたはAdminです</h1>
+            <h1 class="dxm-effect text-center">あなたはAdminです</h1>
     }
     else if (User.IsInRole("Manager"))
     {
-        <h1 class="text-center">あなたはManagerです</h1>
+            <h1 class="dxm-effect text-center">あなたはManagerです</h1>
     }
     else if (User.IsInRole("Member"))
     {
-        <h1 class="text-center">あなたはMemberです</h1>
+            <h1 class="dxm-effect text-center">あなたはMemberです</h1>
     }
     else
     {
-        <h1 class="text-center">レポルンへようこそ！</h1>
+
+            <h1 class="dxm-effect text-center">レポルンへようこそ！ :Welcome to Reporn</h1>
+            @* <h1 class="text-center">レポルンへようこそ！</h1> *@
     }
 </div>
 </div>
 <partial name="_footer" />
+
+
+<script src="/js/DXMEffect.js"></script>
+<script>
+    const elements = document.querySelectorAll('.dxm-effect');
+    [].forEach.call(elements, function (el) {
+        const dxmEffect = new DXMEffect(el, {
+            speed: 30,
+            delay: 100,
+        })
+        dxmEffect.init()
+    })
+</script>
 
 <style>
     html, body{
