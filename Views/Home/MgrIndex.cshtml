@@ -4,8 +4,93 @@
 
 }
 
+
+@* ここに新機能のJavascript *@
+<script>
+var  upSpeed=15;  //メッセージのスライド速度
+var  delay =3000; // 次のメッセージに切り替わるまでの静止時間
+var  tickerH=40;  // 表示ボックスの高さ
+ window.onload =function divScroller(){
+  scroller = document.getElementById("ticKer"); // div 表示ボックス
+  scroller.style.height= tickerH+"px"; // 表示ボックスの高さ
+  scroller.style.lineHeight= tickerH+"px"; // 行の高さ
+    slide = document.getElementById("ulArea"); // スライドさせる ul要素
+    slide.style.position = "absolute"; // 絶対配置
+    slide.style.top = tickerH+"px" ;  // slide のtop(上辺)の位置
+  innScroll(tickerH, upSpeed, delay)
+      }
+  function innScroll(tickerH, upSpeed, delay){
+   msec = upSpeed; // スクロール時間
+   numTop = parseInt(slide.style.top) // 数値文字列を整数に変換
+  if (numTop > -tickerH){ // top位置が -30にならない間は
+   slide.style.top = (numTop-1)+"px"; // top位置を -1px 上へ
+     }
+  else{ slide.style.top = 0+"px";
+               cngLi(); // 次のメッセージと交代
+       }
+   if(numTop==0){msec = delay;// 静止時間 現在のメッセージを待機
+     }
+    setTimeout("innScroll("+ tickerH +","+ upSpeed +"," + delay +")", msec);
+    }
+function cngLi(){ // メッセージの移動
+   base= document.getElementById("ulArea");
+    liList = base.getElementsByTagName("li");// 与えられたタグ名を持つ要素のリスト
+     elm = liList[0];// 最上部の "li"要素
+    base.appendChild(elm); // elm を子ノードとして末尾に移動する。
+      }
+</script>
+
+
+@* ここに新機能 *@
+<link rel="stylesheet" href="~/css/SlideSticker.css" />
+<div id="wrapper">
+    <div id="title">未読のレポート</div>
+    <div id="ticKer">
+        <ul id="ulArea">
+            <!-- ul要素 箇条書き -->
+            @{
+                //!feedbackIds.Contains(x.ReportId)
+                if (Model.report.Count != 0)
+                {
+                    foreach (var x in Model.report)
+                    {
+                        <li>名前:@x.User.LastName@x.User.FirstName 日付:@x.Date:報告内容:@x.Comment</li>
+                    }
+                    <li>以上です</li>
+                }
+                else 
+                {
+                    <li>未読のレポートはありません。</li>
+                    <li>おしまい</li>
+                }
+            }
+
+        </ul>
+    </div>
+</div>
+
+
 <h1 class="text-center">プロジェクトメンバー一覧</h1>
 <p class="text-center">メンバー名クリックでメンバーの報告一覧にアクセス</p>
+
+@* バックアップ *@
+@* <link rel="stylesheet" href="~/css/SlideSticker.css" />
+<div id="wrapper">
+    <div id="title">未読のタスク</div>
+    <div id="ticKer">
+        <ul id="ulArea">
+            <!-- ul要素 箇条書き -->
+            <li>名前::報告内容見出し</li>
+            <li>表示ボックスの下からスライドインします。</li>
+            <li>前のテキストが上にスライドアウトしながら、</li>
+            <li>次のテキストが下からスライドインしてきます。</li>
+            <li>おしまい</li>
+        </ul>
+    </div>
+</div> *@
+
+
+
 
     <div class="container-for-grid-mem">
     @if (Model.Users.Count() != 0)

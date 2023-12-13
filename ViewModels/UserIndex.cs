@@ -9,5 +9,20 @@ namespace ReportSystem.ViewModels
         public List<ApplicationUser> Users { get; set; }
 
         public List<Project> Projects { get; set; }
+
+        ////以下スライド未読記事表示の為に追加
+       // public List<Feedback>? feedbacks { get; set; }
+
+        public List<Report>? report { get; set; }
+
     }
+    ////スライド未読記事表示の為に使います
+    //public class NandemoIndex
+    //{
+    //    public ApplicationUser User { get; set; }
+
+    //    public List<ApplicationUser> Users { get; set; }
+
+    //  
+    //}
 }

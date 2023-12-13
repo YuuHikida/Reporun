@@ -57,7 +57,7 @@ namespace ReportSystem.Controllers
 
             var loginUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             reportIndex.User = (ApplicationUser)_context.Users.FirstOrDefault(x => x.Id == Id);
-
+            //↓がUserIDを参照にreportテーブルから値を全取得
             var allReports = _context.report.Where(x => x.UserId.Equals(Id)).ToList();
             var allAttendance = _context.attendance.Where(x => x.Report.UserId.Equals(Id)).ToList();
             var allFeedback = _context.feedback.ToList();
@@ -150,6 +150,7 @@ namespace ReportSystem.Controllers
             var applicationDbContext = _context.report.Include(r => r.User);
             return View(reportIndex);
         }
+        //-------------------------------------------------ここまで------------------------------------------------------------------------
 
         // GET: Reports/memindex　メンバー用
         [Authorize(Roles = "Member")]
