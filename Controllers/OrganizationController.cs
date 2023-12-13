@@ -37,21 +37,23 @@ namespace ReportSystem.Controllers
         {
             ApplicationUserChart applicationUserChart = new ApplicationUserChart();
           
-            //↓ログイン中のrole
+            //ログイン中のrole
             var loginUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loginManager = await _userManager.FindByIdAsync(loginUserId);
-            
             //applicationUserChart.User = new ApplicationUser();
             applicationUserChart.User = loginManager;
 
-            //組織図に必要なManager一括取得
+            //組織図に必要な社員一括取得
             var OrganizationChartDate = _context.user.ToList();
             applicationUserChart.Users = new List<ApplicationUser>();
 
-            foreach(var a in  OrganizationChartDate)
-            {
-                applicationUserChart.Users.Add(a);
-            }
+            //foreach(var adochan in  OrganizationChartDate)
+            //{
+            //    applicationUserChart.Users.Add(adochan);
+            //}
+
+            //ラムダ式
+            OrganizationChartDate.ForEach(x => applicationUserChart.Users.Add(x));
 
             return View(applicationUserChart);
         }
