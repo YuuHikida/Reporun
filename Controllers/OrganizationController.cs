@@ -46,12 +46,6 @@ namespace ReportSystem.Controllers
             //組織図に必要な社員一括取得
             var OrganizationChartDate = _context.user.ToList();
             applicationUserChart.Users = new List<ApplicationUser>();
-
-            //foreach(var adochan in  OrganizationChartDate)
-            //{
-            //    applicationUserChart.Users.Add(adochan);
-            //}
-
             //ラムダ式
             OrganizationChartDate.ForEach(x => applicationUserChart.Users.Add(x));
 

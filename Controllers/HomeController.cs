@@ -176,10 +176,11 @@ namespace ReportSystem.Controllers
             var feedbackIds = _context.feedback.Select(f => f.ReportId).ToList();
             //var kidding_me = _context.report.Where(x => x.UserId.NotEquals(x.feedbacks.feedbackId).ToList());
             var sladerAllReports = _context.report.Where(x => !feedbackIds.Contains(x.ReportId)).ToList();
-            foreach (var x in sladerAllReports)
-            {
-                userIndex.report.Add(x);
-            }
+            //foreach (var x in sladerAllReports)
+            //{
+            //    userIndex.report.Add(x);
+            //}
+            sladerAllReports.ForEach(x => userIndex.report.Add(x));
             //var allReports = _context.report.Where(x => x.UserId.Equals(Id)).ToList();
             //-------------------------------------------------------------------------
 
