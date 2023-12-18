@@ -15,6 +15,70 @@
     </div>
 }
 
+@* 以下遅刻判定JavaScript *@
+<script>
+    @*
+        id=attendance...出勤
+        id=First_Time...出勤時間0~23
+        id=Last_Time...0~59
+        要素をここに書き連ねる
+        *@
+
+        var element = "";
+        var F_Time = 0;
+        var L_Time = 0;
+
+    function call() {
+        const resultInput = document.getElementById('SayHello');
+        if (element == "出勤" && F_Time >= 9 && L_Time > 0 || F_Time>9 ) {
+            resultInput.placeholder = 'あなたは遅刻しています。この報告内容欄に遅刻理由を記述しManagerに報告してください。';
+            }else {
+             resultInput.placeholder = '';
+             }
+    }
+
+    // 読み込んだ時の出勤種類,hour ,minitus
+    window.onload = function () {
+                 element = document.getElementById('attendance').value;
+        console.log(element);
+
+        F_Time = parseInt(document.getElementById('First_Time').value, 10);
+        console.log(F_Time);
+
+        L_Time = parseInt(document.getElementById('Last_Time').value, 10);
+        console.log(L_Time);
+        call();
+        }
+    console.log('-----------------');
+        //onClickした時の出勤種類
+    window.tests = function () {
+        element = document.getElementById('attendance').value;
+        call();
+        }
+    //onClickした時の出勤時間、hour
+    window.F_hour = function () { 
+        F_Time = parseInt(document.getElementById('First_Time').value, 10);
+        call();
+    }
+    //onClickした時の出勤時間、minitus
+    window.L_minitus = function () { 
+        L_Time = parseInt(document.getElementById('Last_Time').value, 10);
+        call();
+    }
+    
+
+</script>
+
+
+
+<div style="display : none">
+
+
+    遅刻しています。この報告内容欄に遅刻理由を記述し
+    </div>
+   
+
+
 <div class="container-uindex">
     <h1 class="text-center">報告の作成</h1>
     <div class="container-form">
@@ -28,24 +92,29 @@
              </div>
             <div class="form-group">
                 <label class="control-label">勤怠</label>
-                <select name="values" class="form-control">
-                    <option value="出勤">出勤</option>
+
+                <select name="values" class="form-control" id="attendance" onchange="tests(this);">
+                    <option value="出勤" selected>出勤</option>
                     <option value="有給">有給</option>
                     <option value="早退">早退</option>
                     <option value="遅刻">遅刻</option>
                 </select>
             </div>
+
                 <div class="form-group">
                     <label class="control-label pt-2 pb-2">出社時間</label>
                     <div class="d-flex">
                         <div>
                             <label class="control-label">時間</label>
                             @* ここを変える *@
-                            <select name="values" class="form-control" type="time" >
+
+                        <select name="values" class="form-control" type="time" id="First_Time" onchange="F_hour(this);">
                                 @for (int i = 0; i <= 23; i++)
                                 {
+
                                     @if(i == ViewBag.StartHour)
                                     {
+                                 
                                     <option value="@i" selected>@i</option>
                                     }
                                     else
@@ -57,7 +126,7 @@
                         </div>
                     <div>
                         <label class="control-label">分</label>
-                        <select name="values" class="form-control" type="time" >
+                        <select name="values" class="form-control" type="time"  id="Last_Time" onchange="L_minitus();">
                             @switch(ViewBag.StartMinute)
                             {
                                 case 0:
@@ -168,7 +237,7 @@
             </div>
             <div class="form-group">
                 <label class="control-label">報告内容(400文字以内)</label>
-                <textarea name="values" class="form-control" maxlength="400" style="height:300px;"></textarea>
+                <textarea name="values" class="form-control" maxlength="400" style="height:300px;" placeholder="" id="SayHello"></textarea>
             </div>
             <div class="form-group">
                 <label class="control-label">明日やること(200文字以内)</label>
@@ -181,6 +250,7 @@
         <a asp-action="MemIndex">報告一覧に戻る</a>
     </div>
 </div>
+
 
 @section Scripts {
     @{

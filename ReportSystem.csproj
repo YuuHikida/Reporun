@@ -11,6 +11,10 @@
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
+    <Content Remove="wwwroot\css\Animation.cs" />
+    <Content Remove="wwwroot\css\common - コピー.css" />
+    <Content Remove="wwwroot\css\common - コピー.min.css" />
+    <Content Remove="wwwroot\css\common - コピー.scss" />
     <Content Remove="wwwroot\js\controller.js" />
   </ItemGroup>
 

@@ -1,13 +1,57 @@
 ﻿@model ReportSystem.ViewModels.ApplicationUserChart;
 
+@using ReportSystem.ViewModels;
+@using ReportSystem.Chartlogic;
 <link rel='stylesheet' href='/css/organization_chart.css    '>
+
 
 <div class="genealogy">
     <dl>
-        <dt>廣井しょう</dt>
-        <dd>ラーハルト</dd>
-        <dd>ボラホーン</dd>
-        <dd>ガルダンディー</dd>
-        <dd>aaaaaaaaaa</dd>
+        @* <dt>廣井しょう</dt> *@
+        @* <dd>ラーハルト</dd>
+        <dd>aaaaaaaaaa</dd> *@
+        @if (Model.Users != null && Model.Users.Any())
+        {
+
+            <dt>@HtmlExtensions.GetUserHtml(Model,"会長")</dt>
+            <dd>@HtmlExtensions.GetUserHtml(Model,"社長")</dd>
+            <dt>@HtmlExtensions.GetUserHtml(Model,"社長")</dt>
+        }else{
+        <p>NoDate</p>
+        }
+    </dl>
+    <dl>
+        <dd>@HtmlExtensions.GetUserHtml(Model,"GM")</dd>
     </dl>
 </div>
+
+
+@*
+//リファクタリング用のバックアップ
+@* ↓空白文字列入れるよう 
+            char W = '\u00A0';
+
+                public String NotFoundDate()
+                {
+                    return
+                }
+
+
+            var ChairMan = Model.Users.FirstOrDefault(users => users.NewRole == "会長");
+@if (ChairMan != null)
+{
+    <dt>会長:@W@ChairMan.LastName@W@ChairMan.FirstName</dt>
+}
+
+            var President = Model.Users.FirstOrDefault(users => users.NewRole == "社長");
+@if (President != null)
+{
+    <dd>社長:@W@President.LastName@W@President.FirstName</dd>
+}
+            var GM = Model.Users.FirstOrDefault(Users => Users.NewRole == "GM");
+@if (President != null)
+{
+    <dd>GM:</dd>
+}
+
+*@
