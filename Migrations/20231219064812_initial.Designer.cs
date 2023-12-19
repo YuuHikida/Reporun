@@ -12,7 +12,7 @@ using ReportSystem.Data;
 namespace ReportSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231208073119_initial")]
+    [Migration("20231219064812_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -347,6 +347,9 @@ namespace ReportSystem.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("LateJudment")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TomorrowComment")
                         .HasMaxLength(200)

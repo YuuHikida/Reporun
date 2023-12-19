@@ -345,6 +345,9 @@ namespace ReportSystem.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("LateJudment")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TomorrowComment")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");

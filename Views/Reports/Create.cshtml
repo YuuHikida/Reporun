@@ -29,11 +29,16 @@
         var L_Time = 0;
 
     function call() {
+
         const resultInput = document.getElementById('SayHello');
+        const isLateField = document.getElementById('isLate');
+
         if (element == "出勤" && F_Time >= 9 && L_Time > 0 || F_Time>9 ) {
             resultInput.placeholder = 'あなたは遅刻しています。この報告内容欄に遅刻理由を記述しManagerに報告してください。';
+            isLateField.value = 'true'; // 条件が true の場合、'true' を設定
             }else {
              resultInput.placeholder = '';
+            isLateField.value = 'false'; // 条件が true の場合、'true' を設定
              }
     }
 
@@ -68,16 +73,6 @@
     
 
 </script>
-
-
-
-<div style="display : none">
-
-
-    遅刻しています。この報告内容欄に遅刻理由を記述し
-    </div>
-   
-
 
 <div class="container-uindex">
     <h1 class="text-center">報告の作成</h1>
@@ -246,6 +241,11 @@
             <div class="form-group">
                 <input type="submit" value="作成" class="w-100 btn btn-lg btn-warning" />
             </div>
+
+            <!-- hidden fieldを追加 -->
+            <input type="hidden" id="isLate" name="values" value="" />
+
+
         </form>
         <a asp-action="MemIndex">報告一覧に戻る</a>
     </div>

@@ -185,6 +185,7 @@ namespace ReportSystem.Migrations
                     UpDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Comment = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: true),
                     TomorrowComment = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    LateJudment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>

@@ -14,6 +14,5 @@ namespace ReportSystem.ViewModels
 
         public List<Feedback>? Feedbacks {  get; set;} 
 
-        public bool LateJudgment { get; set; }
     }
 }

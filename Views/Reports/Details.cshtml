@@ -31,7 +31,7 @@
 
 <div class="container-rdetail fadeInR">
     <div class="container-form">
-        <h4 class="pt-3 text-center">報告日：@Model.Report.Date.Year 年 @Model.Report.Date.Month 月 @Model.Report.Date.Day 日 (@dow)</h4>
+        <h4 class="pt-3 text-center" style="display: flex; align-items: center;"> 報告日：@Model.Report.Date.Year 年 @Model.Report.Date.Month 月 @Model.Report.Date.Day 日 (@dow)</h4>
         <div class="d-flex justify-content-center">
             <p class="text-center fw-bold pt-2 pe-3">勤怠 : @Model.Attendance.Status</p>
 
@@ -63,7 +63,15 @@
         <div class="d-flex justify-content-center">
             <p class="fw-bold pt-2 pb-2 pe-3">出勤時間 : @Model.Attendance.StartTime.Hour : @sTime </p>
             <p class="fw-bold pt-2 pb-2">退勤時間 : @Model.Attendance.EndTime.Hour : @eTime</p>
-        </div>
+
+            <!--     ここに追加         -->
+            @if (Model.Report.LateJudment == "true")
+            {
+                <img id="lateimage" src="/images/nebou.png" style="max-width: 100px; height: auto; margin-left: 10px;" />
+                @* <img id="lateimage" src="/images/nebou.png" style="position: fixed; bottom: 10px; right: 10px; max-width: 100px; height: auto;" /> *@
+            }
+
+            </div>
         <p class="fw-bold pt-2 pb-2">報告内容</p>
         <p style="white-space:pre-wrap;">@Model.Report.Comment</p>
         <p class="fw-bold pt-2 pb-2" style="white-space:pre-wrap;">明日やること</p>

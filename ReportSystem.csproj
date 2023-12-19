@@ -38,7 +38,6 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Views\Home\css\" />
-    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
   <ItemGroup>

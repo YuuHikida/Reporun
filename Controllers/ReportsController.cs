@@ -394,6 +394,8 @@ namespace ReportSystem.Controllers
             return View(managerMain);
         }
 
+
+        //↓が個人レポートの表示
         // GET: Reports/Details/5
         [Authorize(Roles = "Manager, Member")]
         public async Task<IActionResult> Details(int? id)
@@ -495,6 +497,8 @@ namespace ReportSystem.Controllers
 
             return View(reportDetail);
         }
+
+       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -627,7 +631,9 @@ namespace ReportSystem.Controllers
                 Date = submitDay,
                 Comment = values[8],
                 TomorrowComment = values[9],
-                UserId = loginUserId
+                UserId = loginUserId,
+                //追加です↓
+                LateJudment = values[10]
             };
 
             var sameDayReportCheck = _context.report.Where(x => x.UserId.Equals(loginUserId)).Where(y => y.Date.Year == report.Date.Year && y.Date.Month == report.Date.Month && y.Date.Day == report.Date.Day).ToList();
