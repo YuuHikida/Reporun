@@ -1,0 +1,19 @@
+version: '3'
+services:
+  node-app:
+    build:
+      context: ./path_to_node_project
+      dockerfile: Dockerfile_node
+
+    ports:
+      - "3000:3000"
+    # ‚»‚Ì‘¼‚Ìİ’è
+
+  aspnet-app:
+    build:
+      context: ./path_to_dotnet_project
+      dockerfile: Dockerfile_dotnet
+
+    ports:
+      - "80:80"
+    # ‚»‚Ì‘¼‚Ìİ’è

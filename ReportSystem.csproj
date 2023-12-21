@@ -1,16 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-ReportSystem-4f6155d2-4495-43f3-9151-4763b26fffe1</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
+    <OutputType>Exe</OutputType>
+    <Configurations>Debug;Release;compose</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
+    <Content Remove="wwwroot\css\Animation.cs" />
+    <Content Remove="wwwroot\css\common - コピー.css" />
+    <Content Remove="wwwroot\css\common - コピー.min.css" />
+    <Content Remove="wwwroot\css\common - コピー.scss" />
+    <Content Remove="wwwroot\js\controller.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +40,6 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Views\Home\css\" />
-    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -13,5 +13,6 @@ namespace ReportSystem.ViewModels
         public List<Attendance> Attendances { get; set;}
 
         public List<Feedback>? Feedbacks {  get; set;} 
+
     }
 }

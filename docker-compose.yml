@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  webapp:
+    build: .
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - db
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=ReportSystem;Initial Catalog=ReportSystem;User ID=YUU;Password=;
+
+  db:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      SA_PASSWORD: "yuu0103"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"

@@ -1,0 +1,58 @@
+@import "ri";
+@import "yu";
+@import "se";
+
+
+/*編集中の箇所をコメントアウトで囲う*/
+/*please use the following main colors*/
+/*カラーを使うときには下記の変数名を使用する*/
+
+$main-blue : #38C3FF;
+$main-yellow : #FFDE59;
+$orange : #FF914D;
+$navy : #0A4191;
+$gray : #EDF2F7;
+$fontType: "Meiryo UI";
+
+
+
+html {
+    height: 100%;
+    font-size: 14px;
+    font-family: $fontType;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+        font-family: $fontType;
+    }
+}
+
+body {
+    height: 100%;
+    margin-bottom: 60px;
+    font-family: $fontType;
+}
+
+.select-icon {
+    height: 50px;
+    width: 50px;
+    font-family: $fontType;
+}
+
+.select-icon:hover {
+/*    cursor: pointer;*/
+    animation: shake 2s infinite;
+    transform: rotate(20deg);
+}
+
+@keyframes shake {
+    50% {
+        transform: rotate(-20deg);
+    }
+
+    100% {
+        transform: rotate(20deg);
+    }
+}

@@ -1,0 +1,81 @@
+﻿/* .genealogyクラスのスタイル */
+.genealogy {
+    display: table; /* テーブルとして要素を表示 */
+    position: relative; /* 相対位置付け */
+    margin: 0px auto; /* 左右の余白を自動調整して中央に配置 */
+    font-size: 1.5vw; /* フォントサイズをビューポートの幅に対する相対的な値で設定 */
+}
+
+    /* .genealogy > dl要素のスタイル */
+    .genealogy > dl {
+        display: flex; /* フレックスボックスとして要素を表示 */
+        justify-content: center; /* コンテンツを水平方向に中央揃え */
+        align-items: center; /* コンテンツを垂直方向に中央揃え */
+        position: relative; /* 相対位置付け */
+        padding: 5em 0px 0px; /* 上側に5emのパディング */
+        margin: 0px; /* マージンをゼロに設定 */
+    }
+
+        /* .genealogy > dlの後に疑似要素を追加 */
+        .genealogy > dl::after {
+            position: absolute; /* 絶対位置付け */
+            top: 3em; /* 上から3emの位置 */
+            left: 6em; /* 左から6emの位置 */
+            right: 6em; /* 右から6emの位置 */
+            height: 2em; /* 高さ2em */
+            /* 上下にグラデーションを適用した背景を設定（赤色に変更） */
+            background: linear-gradient(to right, red 0%, black 100%) top center / 0.1em 100% no-repeat, linear-gradient(to right, red 0%, red 100%) bottom left / 100% 0.1em no-repeat;
+            content: ""; /* 空のコンテンツを追加 */
+        }
+
+        /* .genealogy > dl > dt, .genealogy > dl > dd要素のスタイル */
+        .genealogy > dl > dt,
+        .genealogy > dl > dd {
+            display: flex; /* フレックスボックスとして要素を表示 */
+            justify-content: center; /* コンテンツを水平方向に中央揃え */
+            align-items: center; /* コンテンツを垂直方向に中央揃え */
+            padding: 0.5em; /* パディング */
+            width: 10em; /* 幅10em */
+            height: 3em; /* 高さ3em */
+            border: 0.1em solid black; /* 0.2em幅のボーダーを赤色で設定 */
+            box-sizing: border-box; /* ボックスサイズを指定 */
+            text-align: center; /* テキストを中央揃え */
+            line-height: 1; /* 行の高さを1に設定 */
+        }
+
+        /* .genealogy > dl > dt要素のスタイル */
+        .genealogy > dl > dt {
+            position: absolute; /* 絶対位置付け */
+            top: 0px; /* 上から0pxの位置 */
+            left: 50%; /* 左から50%の位置 */
+            transform: translateX(-50%); /* X軸方向に50%移動 */
+        }
+
+        /* .genealogy > dl > dd要素のスタイル */
+        .genealogy > dl > dd {
+            position: relative; /* 相対位置付け */
+            padding: 0px; /* パディング */
+            margin: 2em 1em 0px; /* マージン */
+        }
+
+            /* .genealogy > dl > dd要素の疑似要素:beforeのスタイル */
+            .genealogy > dl > dd::before {
+                position: absolute; /* 絶対位置付け */
+                top: -2.4em; /* 上から-2.4emの位置 */
+                left: 0px; /* 左から0pxの位置 */
+                width: 100%; /* 幅100% */
+                height: 2.3em; /* 高さ2.3em */
+                /* 複数のグラデーションを適用した背景を設定（赤色に変更） */
+                background: linear-gradient(to right, red 0%, black 100%) top center / 0.1em calc(100% - 0.3em) no-repeat, linear-gradient(to top right, transparent 50%, red 50%) bottom -0.1em left calc(50% - 0.2em + 1px) / 0.4em 1em no-repeat, linear-gradient(to top left, transparent 50%, red 50%) bottom -0.1em left calc(50% + 0.2em - 1px) / 0.4em 1em no-repeat;
+                overflow: hidden; /* 内容をはみ出さないようにする */
+                content: ""; /* 空のコンテンツを追加 */
+            }
+
+    /* .genealogyクラス内の別の.genealogyクラスのスタイル */
+    .genealogy .genealogy {
+        position: absolute; /* 絶対位置付け */
+        top: -0.2em; /* 上から-0.2emの位置 */
+        left: 50%; /* 左から50%の位置 */
+        transform: translateX(-50%); /* X軸方向に50%移動 */
+        margin: 0px; /* マージンをゼロに設定 */
+    }

@@ -25,6 +25,9 @@ namespace ReportSystem.Models
         [MaxLength(200)]
         public string? TomorrowComment { get; set; }
 
+        //遅刻判定
+        public string? LateJudment { get; set; }
+
         //User_FK
         [ForeignKey("UesrId")]
         public string UserId { get; set; }
