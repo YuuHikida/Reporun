@@ -20,12 +20,45 @@
 }
 
 <head>
-<link rel="stylesheet" type="text/css" href="/css/Animation1.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="/css/rold.css">
+    @* <link href="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/reset.css" rel="stylesheet"> *@
+    @* <link href="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/4-1-4/css/4-1-4.css" rel="stylesheet"> *@
+    @* 上がローディング、下が背景アニメ *@
+    <link rel="stylesheet" type="text/css" href="/css/Animation1.css">
 </head>
 
+@* 上がタイトル画面 *@
 @* 波打ってくれ頼む！↓ *@
 
 <body>
+    <!--==============レイアウトを制御する独自のCSSを読み込み===============-->
+    <script>
+        //logoの表示
+        $(window).on('load', function () {
+            $("#splash").delay(1500).fadeOut('slow');//ローディング画面を1.5秒（1500ms）待機してからフェードアウト
+            $("#splash_logo").delay(1200).fadeOut('slow');//ロゴを1.2秒（1200ms）待機してからフェードアウト
+        });
+    </script>
+
+
+   
+        <div id="splash">
+            <div id="splash_logo">
+            <img src="/images/5a42979bb8799d42fa4503345f95bf3a1e7ba5a6.png" alt="" class="fadeUp" width="400%" height="400%">
+            </div>
+        </div>
+
+        <main>
+            <div id="container">
+
+
+
+
+
+
     @* <div style="display: flex; justify-content: center; align-items: flex-start;"> *@
     <div style="display: flex; justify-content: center; align-items: center;">
    <div class="area">
@@ -93,7 +126,8 @@
             [].forEach.call(elements, function (el) {
                 const dxmEffect = new DXMEffect(el, {
                     speed: 30,
-                    delay: 100,
+                    delay: 300, 
+                    // 上デフォルト100推奨
                 })
                 dxmEffect.init()
             })
@@ -104,14 +138,18 @@
          </ul>
     </div> 
     </div>
-    <partial name="_footer" />
     
+    @* こっからしたがローディング画面処理終わり *@
+
+    </div>
+    </main>
+    <partial name="_footer" />
+    <!--==============JQuery読み込み===============-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/4-1-4/js/4-1-4.js"></script>
+
+ 
 </body>
 
 
-@* <style>
-    html, body{
-        background-color: #FFDE59;
-    }
-
-</style>   *@
