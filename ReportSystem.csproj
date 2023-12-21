@@ -7,6 +7,8 @@
     <UserSecretsId>aspnet-ReportSystem-4f6155d2-4495-43f3-9151-4763b26fffe1</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
+    <OutputType>Exe</OutputType>
+    <Configurations>Debug;Release;compose</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

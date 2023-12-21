@@ -1,16 +1,51 @@
-FROM node:latest
+# ƒJƒXƒ^ƒ}ƒCƒY•û–@‚âVisual Studio‚Ì—˜—p•û–@‚ÉŠÖ‚·‚éî•ñ‚Ö‚ÌƒŠƒ“ƒN
+#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-WORKDIR /usr/src/app
+# ASP.NET Core 6.0ƒ‰ƒ“ƒ^ƒCƒ€‚ðŠÜ‚ÞŠî–{ƒCƒ[ƒW‚ðŽæ“¾
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 
-# ãƒ›ã‚¹ãƒˆã® package.json ã¨ package-lock.json ã‚’ã‚³ãƒ”ãƒ¼
-COPY package*.json ./
+# ƒRƒ“ƒeƒi“à‚Ìì‹ÆƒfƒBƒŒƒNƒgƒŠ‚ð /app ‚ÉÝ’è
+WORKDIR /app
 
-# npm ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
-RUN npm install
+# ƒRƒ“ƒeƒi‚ªƒ|[ƒg80iHTTPj‚Æ443iHTTPSj‚Å’ÊM‚·‚é‚±‚Æ‚ðŽ¦‚·
+EXPOSE 80
+EXPOSE 443
 
-# ãƒ›ã‚¹ãƒˆã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã‚’ã‚³ãƒ³ãƒ†ãƒŠã®ä½œæ¥­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«ã‚³ãƒ”ãƒ¼
+# .NET Core 6.0 SDK‚ðŠÜ‚Þƒrƒ‹ƒh—p‚ÌŠî–{ƒCƒ[ƒW‚ðŽæ“¾
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+
+# ƒrƒ‹ƒhƒXƒe[ƒW‚Å‚Ìì‹ÆƒfƒBƒŒƒNƒgƒŠ‚ð /src ‚ÉÝ’è
+WORKDIR /src
+
+# ƒvƒƒWƒFƒNƒgƒtƒ@ƒCƒ‹icsprojj‚ðƒRƒ“ƒeƒi‚ÉƒRƒs[
+COPY ["ReportSystem.csproj", "."]
+
+# ƒvƒƒWƒFƒNƒg‚ÌˆË‘¶ŠÖŒW‚ð•œŒ³
+RUN dotnet restore "./ReportSystem.csproj"
+
+# Žc‚è‚ÌƒvƒƒWƒFƒNƒgƒtƒ@ƒCƒ‹‚ðƒRƒ“ƒeƒi‚ÉƒRƒs[
 COPY . .
 
-EXPOSE 3000
+# ƒrƒ‹ƒhƒXƒe[ƒW‚Ìì‹ÆƒfƒBƒŒƒNƒgƒŠ‚ðXV
+WORKDIR "/src/."
 
-CMD ["npm", "start"]
+# ƒvƒƒWƒFƒNƒg‚ðƒŠƒŠ[ƒX\¬‚Åƒrƒ‹ƒh‚µA/app/build ‚Éo—Í
+RUN dotnet build "ReportSystem.csproj" -c Release -o /app/build
+
+# ƒrƒ‹ƒhƒXƒe[ƒW‚©‚çpublishƒXƒe[ƒW‚ÖˆÚs
+FROM build AS publish
+
+# ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ðƒpƒuƒŠƒbƒVƒ…iƒRƒ“ƒpƒCƒ‹‚ÆƒŠƒ\[ƒX‚ÌƒpƒbƒP[ƒWƒ“ƒOj
+RUN dotnet publish "ReportSystem.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# baseƒXƒe[ƒW‚©‚çÅI“I‚ÈŽÀsƒCƒ[ƒW‚ðì¬
+FROM base AS final
+
+# ÅIƒCƒ[ƒW‚Å‚Ìì‹ÆƒfƒBƒŒƒNƒgƒŠ‚ð /app ‚ÉÝ’è
+WORKDIR /app
+
+# publishƒXƒe[ƒW‚Åì¬‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ðÅIƒCƒ[ƒW‚ÉƒRƒs[
+COPY --from=publish /app/publish .
+
+# ƒRƒ“ƒeƒi‚ª‹N“®‚µ‚½Û‚ÉŽÀs‚³‚ê‚éƒRƒ}ƒ“ƒh‚ðÝ’è
+ENTRYPOINT ["dotnet", "ReportSystem.dll"]

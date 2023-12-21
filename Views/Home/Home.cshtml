@@ -3,10 +3,6 @@
 }
 
 
-<head>
-    <link rel="stylesheet" href="~/css/Animetion.ccs" />
-</head>
-
 
 @if (TempData["ProjectError"] != null)
 {
@@ -23,58 +19,99 @@
     </div>
 }
 
+<head>
+<link rel="stylesheet" type="text/css" href="/css/Animation1.css">
+</head>
 
-<div class="logo-home">
-    <img class="purun" src="/images/logo_tate.png"/>
-</div>
+@* 波打ってくれ頼む！↓ *@
+
+<body>
+    @* <div style="display: flex; justify-content: center; align-items: flex-start;"> *@
+    <div style="display: flex; justify-content: center; align-items: center;">
+   <div class="area">
+        <ul class="circles">
 
 
 
-<div class="home-message">
-<div class="p-3">
-    @if (User.IsInRole("Admin"))
-    {
-            <h1 class="dxm-effect text-center">あなたはAdminです</h1>
-    }
-    else if (User.IsInRole("Manager"))
-    {
-            <h1 class="dxm-effect text-center">あなたはManagerです</h1>
-    }
-    else if (User.IsInRole("Member"))
-    {
-            <h1 class="dxm-effect text-center">あなたはMemberです</h1>
-    }
-    else
-    {
+            <li></li>
+            <li></li>
+            
+            <li></li>
+            <li></li>
+            <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
 
-            <div class="bg"></div>
-            <div class="bg bg2"></div>
-            <div class="bg bg3"></div>
-            <div class="content">
+
+
+            <div class="logo-home">
+                    <img class="purun" src="/images/logo_tate.png" />
             </div>
-            <h1 class="dxm-effect text-center">レポルンへようこそ！ :Welcome to Reporn</h1>
-            @* <h1 class="text-center">レポルンへようこそ！</h1> *@
-    }
-</div>
-</div>
-<partial name="_footer" />
+           
+           
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+
+        <div class="home-message">
+            <div class="p-3">
+                @if (User.IsInRole("Admin"))
+                {
+                    <h1 class="dxm-effect text-center">あなたはAdminです</h1>
+                }
+                else if (User.IsInRole("Manager"))
+                {
+                    <h1 class="dxm-effect text-center">あなたはManagerです</h1>
+                }
+                else if (User.IsInRole("Member"))
+                {
+                    <h1 class="dxm-effect text-center">あなたはMemberです</h1>
+                }
+                else
+                {
+
+                    <div class="bg"></div>
+                    <div class="bg bg2"></div>
+                    <div class="bg bg3"></div>
+                    <div class="content">
+                    </div>
+                    <h1 class="dxm-effect text-center">レポルンへようこそ！ :Welcome to Reporn</h1>
+                    @* <h1 class="text-center">レポルンへようこそ！</h1> *@
+                }
+                    </div>
+                </div>
+
+   
+            <li></li>
+ 
+        <script src="/js/DXMEffect.js"></script>
+        <script>
+            const elements = document.querySelectorAll('.dxm-effect');
+            [].forEach.call(elements, function (el) {
+                const dxmEffect = new DXMEffect(el, {
+                    speed: 30,
+                    delay: 100,
+                })
+                dxmEffect.init()
+            })
+        </script>
 
 
-<script src="/js/DXMEffect.js"></script>
-<script>
-    const elements = document.querySelectorAll('.dxm-effect');
-    [].forEach.call(elements, function (el) {
-        const dxmEffect = new DXMEffect(el, {
-            speed: 30,
-            delay: 100,
-        })
-        dxmEffect.init()
-    })
-</script>
 
-<style>
+         </ul>
+    </div> 
+    </div>
+    <partial name="_footer" />
+    
+</body>
+
+
+@* <style>
     html, body{
         background-color: #FFDE59;
     }
 
-</style> 
+</style>   *@

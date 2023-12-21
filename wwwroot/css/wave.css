@@ -1,0 +1,47 @@
+﻿@charset "utf-8";
+
+/*========= レイアウトのためのCSS ===============*/
+
+#wrapper p {
+    padding: 300px 0;
+    text-align: center;
+}
+
+/*========= waveを描画するエリア設定 ===============*/
+
+
+.wave {
+    position: relative;
+}
+
+    .wave:nth-child(1) {
+        background: #fff;
+    }
+
+    .wave:nth-child(2) {
+        background: #ccc;
+    }
+
+    .wave:nth-child(3) {
+        background: #43c0e4;
+    }
+
+    .wave canvas {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+
+.wave {
+    position: relative;
+    height: 200px; /*何も表示されない場合は各波の親要素に高さを持たせましょう。*/
+    background: #fff; /*背景を塗りつぶして重ねた波を表現したい場合は、波を描画する親要素に波と同じ背景色を設定しましょう。*/
+}
+
+canvas {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
