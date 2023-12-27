@@ -4,7 +4,20 @@
 
 }
 
+<head>
+    <style>
+        .center-text {
+            text-align: center;
+        }
 
+        .blue-text {
+            color: blue;
+        }
+
+
+
+    </style>
+</head>
 @* ここに新機能のJavascript *@
 <script>
 var  upSpeed=15;  //メッセージのスライド速度
@@ -40,11 +53,16 @@ function cngLi(){ // メッセージの移動
       }
 </script>
 
-
+<link rel="stylesheet" href="~/css/fade.css" />
 @* ここに新機能 *@
 <link rel="stylesheet" href="~/css/SlideSticker.css" />
-<div id="wrapper">
-    <div id="title">未読のレポート</div>
+
+<div class=" fadeIn">
+    <div id="wrapper">
+    @* <div id="title">未読のレポート</div> *@
+    <div class="center-text">
+        <h1 >～未読のレポート～</h1>
+    </div>
     <div id="ticKer">
         <ul id="ulArea">
             <!-- ul要素 箇条書き -->
@@ -54,7 +72,12 @@ function cngLi(){ // メッセージの移動
                 {
                     foreach (var x in Model.report)
                     {
-                        <li>名前:@x.User.LastName@x.User.FirstName 日付:@x.Date:報告内容:@x.Comment</li>
+                        <li>
+                        @* <li>名前:@x.User.LastName@x.User.FirstName 日付:@x.Date:報告内容:@x.Comment</li>*@
+                            名前:<span class="blue-text">@x.User.LastName@x.User.FirstName</span>
+                            日付:<span class="blue-text">@x.Date.ToString("yyyy/MM/dd"):</span>
+                            報告内容:<span class="blue-text">@x.Comment</span>
+                    </li>
                     }
                     <li>以上です</li>
                 }
@@ -70,7 +93,8 @@ function cngLi(){ // メッセージの移動
 </div>
 
 
-<h1 class="text-center">プロジェクトメンバー一覧</h1>
+    <h1 class="text-center">プロジェクトメンバー一覧</h1>
+
 <p class="text-center">メンバー名クリックでメンバーの報告一覧にアクセス</p>
 
 @* バックアップ *@
@@ -97,7 +121,7 @@ function cngLi(){ // メッセージの移動
     {
         @foreach (var user in Model.Users)
         {
-
+            
             <a class="mgrlink" asp-controller="Reports" asp-action="mgrIndex" asp-route-id="@user.Id">
                 <div class="mem-card fadeIn">
                     <div>
@@ -113,4 +137,5 @@ function cngLi(){ // メッセージの移動
         <p class="text-center">プロジェクトメンバーがいません。</p>
     }
 
-    </div>
+ </div>
+</div>

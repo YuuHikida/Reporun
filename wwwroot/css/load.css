@@ -1,5 +1,8 @@
 ﻿@charset "utf-8";
 
+/*キャッシュ一時無効下*/
+<link href="https://example.com/css/style.css?ver=210615" rel="stylesheet" >
+
 /*========= LoadingのためのCSS ===============*/
 /* Loading背景画面設定　*/
 #splash {
@@ -57,7 +60,7 @@
     width: 100%;
     height: 100%;
     z-index: 999;
-    background: rgba(0, 0, 0,0.8); /* 背景を暗くするための色指定 (0.7 は透明度を調整) */
+    background: rgba(0, 0, 0, 0.9); /* 背景を暗くするための色指定 (0.7 は透明度を調整) */
     text-align: center;
     color: #fff;
 }

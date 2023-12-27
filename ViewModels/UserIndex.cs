@@ -16,13 +16,5 @@ namespace ReportSystem.ViewModels
         public List<Report>? report { get; set; }
 
     }
-    ////スライド未読記事表示の為に使います
-    //public class NandemoIndex
-    //{
-    //    public ApplicationUser User { get; set; }
 
-    //    public List<ApplicationUser> Users { get; set; }
-
-    //  
-    //}
 }

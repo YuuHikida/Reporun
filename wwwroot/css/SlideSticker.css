@@ -1,4 +1,8 @@
-﻿#wrapper {
+﻿/*キャッシュ一時無効下*/
+<link href="https://example.com/css/style.css?ver=210615" rel="stylesheet" >
+
+
+#wrapper {
     display: block;
     width: 100%;
     text-align: center;
@@ -13,7 +17,7 @@
 
 #ticKer {
     border-radius: 20px; /* 角丸ボーダー */
-    width: 1000px; /* 横幅 */
+    width: 700px; /* 横幅 */
     background: #D8D8D8; /* 背景色 */
     position: relative; /* 相対配置（相対位置）*/
     overflow: hidden; /* はみ出た部分を非表示 */
@@ -34,3 +38,14 @@
         font-size: 16px;
         text-align: left;
     }
+
+#ulArea li {
+    list-style-type: none; /* リストマーク なし */
+    line-height: 2.5em;
+    padding-left: 25px;
+    color: #000;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: left;
+    margin-top: 0px; /* マージンを上に調整 */
+}
