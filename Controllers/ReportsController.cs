@@ -13,6 +13,15 @@ using ReportSystem.Data;
 using ReportSystem.Models;
 using ReportSystem.ViewModels;
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Build.Framework;
+using Microsoft.Extensions.Primitives;
+using ReportSystem.Hubs;
+using System;
+using System.Threading.Tasks;
+using ReportSystem.Repositorys;
+
 
 namespace ReportSystem.Controllers
 {
@@ -21,12 +30,20 @@ namespace ReportSystem.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IHubContext<MemberNotificationHub> _hubContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly NotificationRepository _notificationRepository;
 
-        public ReportsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public ReportsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IHubContext<MemberNotificationHub> hubContext,
+                IHttpContextAccessor httpContextAccessor,
+                NotificationRepository notificationRepository)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _hubContext = hubContext;
+            _httpContextAccessor = httpContextAccessor;
+            _notificationRepository = notificationRepository;
         }
 
         // GET: Reports/mgrindex　マネージャー用
@@ -159,6 +176,7 @@ namespace ReportSystem.Controllers
             reportIndex.Reports = new List<Report>();
             reportIndex.Attendances = new List<Attendance>();
             reportIndex.Feedbacks = new List<Feedback>();
+            reportIndex.Notifications = new List<Notification>();
 
             var loginUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             reportIndex.User = await _userManager.FindByIdAsync(loginUserId);
@@ -185,6 +203,19 @@ namespace ReportSystem.Controllers
             }
 
             reportIndex.Feedbacks = allFeedbacks;
+
+            bool IsSent = true;
+            bool IsDisplayed = false;
+            var UserID_ReportID = loginUserId.ToString();
+            var notificationTest = _notificationRepository.GetNotifications(UserID_ReportID, IsSent, IsDisplayed);
+            foreach (var notificationtest in notificationTest)
+            {
+                Notification no = new Notification();
+                no.UserId = notificationtest.UserId;
+                no.DateReport = notificationtest.DateReport;
+                reportIndex.Notifications.Add(no);
+                _notificationRepository.MarkAsDisplayed(notificationtest);
+            }
 
             return View(reportIndex);
         }
@@ -561,6 +592,27 @@ namespace ReportSystem.Controllers
             await _context.SaveChangesAsync();
 
             reportDetail.Feedback = feedback;
+
+            int ReportId_User = report.ReportId;
+            var UserID_ReportID = _context.report
+                        .Where(report => report.ReportId == ReportId_User)
+                        .Select(report => report.UserId)
+                        .FirstOrDefault();
+
+            var Date_ReportID = _context.report
+                        .Where(report => report.ReportId == ReportId_User)
+                        .Select(report => report.Date)
+                        .FirstOrDefault();
+
+            string formattedDate = Date_ReportID.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            //string commentS = values[1];
+            //if (ReportId_User != 0 && !string.IsNullOrEmpty(commentS))
+            if (ReportId_User != 0)
+            {
+                _notificationRepository.SaveNotification(UserID_ReportID, formattedDate);
+                await _hubContext.Clients.All.SendAsync("ReceiveMemberNotification", UserID_ReportID, formattedDate);
+            }
 
             return View(reportDetail);
         }

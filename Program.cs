@@ -4,6 +4,19 @@ using Microsoft.EntityFrameworkCore;
 using ReportSystem.Data;
 using ReportSystem.Models;
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using ReportSystem.Hubs;
+using ReportSystem.Controllers;
+using System.Configuration;
+using ReportSystem.Repositorys;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,6 +29,18 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<NotificationRepository>();
+builder.Services.AddSignalR();
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSignalR().AddHubOptions<MemberNotificationHub>(options =>
+{
+    options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+    options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+    options.EnableDetailedErrors = true;
+});
+
 
 var app = builder.Build();
 
@@ -38,12 +63,18 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<MemberNotificationHub>("/membernotificationHub");
+});
+
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Home}/{id?}");
 app.MapRazorPages();
-//« ASP.NET Core ‚ÌIdentity‚ğg—p‚µ‚Ä–ğŠ„‚ğì¬‚·‚éƒR[ƒh‚Á‚Û‚¢
+//ï¿½ï¿½ ASP.NET Core ï¿½ï¿½Identityï¿½ï¿½gï¿½pï¿½ï¿½ï¿½Ä–ï¿½ï¿½ï¿½ï¿½ì¬ï¿½ï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½Û‚ï¿½
 try
 {
     using (var scope = app.Services.CreateScope())
@@ -61,9 +92,9 @@ try
 }
 catch (Exception ex)
 {
-    // —áŠO‚ª”­¶‚µ‚½ê‡‚Ìˆ—
-    // ƒGƒ‰[ƒƒbƒZ[ƒW‚ğƒƒO‚É‹L˜^‚·‚é‚È‚ÇA“KØ‚È—áŠOˆ—‚ğs‚¤
-    Console.WriteLine($"—áŠO‚ª”­¶‚µ‚Ü‚µ‚½: {ex.Message}");
+    // ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡ï¿½Ìï¿½ï¿½ï¿½
+    // ï¿½Gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½Oï¿½É‹Lï¿½^ï¿½ï¿½ï¿½ï¿½È‚ÇAï¿½Kï¿½Ø‚È—ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
+    Console.WriteLine($"ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½: {ex.Message}");
 }
 
 

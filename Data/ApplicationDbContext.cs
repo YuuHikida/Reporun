@@ -22,6 +22,8 @@ namespace ReportSystem.Data
 
         public DbSet<ReportSystem.Models.UserProject>? userproject { get; set; }
 
+        public DbSet<ReportSystem.Models.Notification>? Notifications { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -51,3 +53,5 @@ namespace ReportSystem.Data
         }
     }
 }
+
+

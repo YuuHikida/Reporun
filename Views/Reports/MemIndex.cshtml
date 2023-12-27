@@ -1,117 +1,307 @@
 ﻿@using System.Security.Claims;
 @model ReportSystem.ViewModels.ReportIndex;
 @{
+    string loginUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+
+@{
+    bool isNotificationDisplayed = false;
+}
+
+@{
     ViewData["Title"] = "MemIndex";
 }
 @if (TempData["AlertReport"] != null)
 {
-    <div class="alert alert-success alert-dismissable fade show m-1" role="alert">
+        <div class="alert alert-success alert-dismissable fade show m-1" role="alert">
         @TempData["AlertReport"]
-        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+            <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
 }
+
+
+<style>
+.notification {
+    display: none;
+    top: 50%;
+    left: 50%;
+    padding: 5px;
+    background-color: #ccc;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+}
+
+.closeBtn {
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+}
+
+.notification + .notification {
+    margin-top: 10px;
+}
+
+div.notification p {
+    text-align: center;
+    display: contents;
+}
+</style>
+
+<script type="module" src="/lib/microsoft/signalr/dist/browser/signalr.js" asp-append-version="true"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="module" src="~/js/notification.js" asp-append-version="true"> </script> 
 
 <div class="text-center">
     <h1>報告一覧 : @Model.User.LastName @Model.User.FirstName</h1>
     <a asp-action="Create" class="btn btn-warning m-3">報告の新規作成</a>
 </div>
-<div class="container-for-grid">
-    @foreach (var item in Model.Reports.OrderByDescending(x => x.Date))
+
+<div id="notificationsContainer"></div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    // var notificationsContainer = document.getElementById('notificationsContainer');
+    // var openNotifications = [];
+    // var userNotifications = {};
+    // var loginUserId = "@loginUserId";
+
+    //let notificationJS = false;
+    var notificationsContainer = document.getElementById('notificationsContainer');
+    var openNotifications = [];
+    var userNotifications = {};
+    var loginUserId = "@loginUserId";
+
+    var connection = new signalR.HubConnectionBuilder().withUrl('/membernotificationHub').build();
+
+    startSignalRConnection(connection);
+
+    showStoredNotifications();
+
+    // connection.on("ReceiveMemberNotification", function (userID_ReportID, dateReportID) {
+    //     if (userID_ReportID === loginUserId) {
+    //         showNotification(dateReportID);
+
+    //         // Uncomment the following lines to mark the notification as displayed
+    //         connection.invoke("NotificationDisplayed", userID_ReportID, dateReportID)
+    //             .then(function () {
+    //                 console.log("NotificationDisplayed invoked successfully");
+    //             })
+    //             .catch(function (err) {
+    //                 console.error(err.toString());
+    //             });
+
+    //         // Reset the flag to allow the display of subsequent notifications
+    //         setTimeout(function () {
+    //             notificationJS = false;
+    //         }, 1000); // Adjust the timeout as needed
+    //     }
+    // });
+
+
+    @if (Model.Notifications != null)
+    {
+        @foreach (var no in Model.Notifications)
         {
-        var count = 0;
-        @if(Model.Feedbacks != null)
-        {
-            @foreach(var fb in Model.Feedbacks)
+            @if (@no.UserId == @loginUserId  )
             {
-                @if(fb.ReportId == item.ReportId)
-                {
-                    count += 1;
-                }
+                <text>
+                      showNotification('@no.DateReport');
+                </text> 
             }
         }
-        @if(count == 0)
-        {
-            <div class="f-card">
-                @{
-                    string dow = item.Date.ToString("ddd");
-                }
-                <h4>@item.Date.Year 年 @item.Date.Month 月 @item.Date.Day 日 (@dow)</h4>
-                @foreach (var itemA in Model.Attendances)
-                {
-                    @if (item.ReportId.Equals(itemA.ReportId))
-                    {
-                        <h4>@itemA.Status</h4>
-                        @switch (itemA.HealthRating)
-                        {
-                            case 1:
-                                <img class="select-icon" src="/images/bad.png" />
-                                break;
-                            case 2:
-                                <img class="select-icon" src="/images/soso.png" />
-                                break;
-                            case 3:
-                                <img class="select-icon" src="/images/fine.png">
-                                break;
-                            case 4:
-                                <img class="select-icon" src="/images/good.png" />
-                                break;
-                            case 5:
-                                <img class="select-icon" src="/images/great.png" />
-                                break;
-                        }
-                    }
-                }
-                @foreach (var itemA in Model.Attendances)
-                {
-                    @if (item.ReportId.Equals(itemA.ReportId))
-                    {
-                        <a asp-action="Details" asp-route-id="@item.ReportId" class="btn btn-warning">詳細</a>
-                    }
-                }
-            </div>
+    }
+
+    connection.on("ReceiveMemberNotification", function (userID_ReportID, dateReportID) {
+        if (userID_ReportID === loginUserId) {
+            showNotification(dateReportID);
+            
+            connection.invoke("NotificationDisplayed", userID_ReportID, dateReportID)
+                .then(function () {
+                    console.log("NotificationDisplayed invoked successfully");
+                })
+                .catch(function (err) {
+                    console.error(err.toString());
+                });
+           // notificationJS = true; 
         }
-        else
-        {
-            <div class="r-card">
-                @{
-                    string dow = item.Date.ToString("ddd");
-                }
-                <h4>@item.Date.Year 年 @item.Date.Month 月 @item.Date.Day 日 (@dow)</h4>
-                @foreach (var itemA in Model.Attendances)
-                {
-                    @if (item.ReportId.Equals(itemA.ReportId))
-                    {
-                                <h4>@itemA.Status</h4>
-                        @switch (itemA.HealthRating)
-                        {
-                            case 1:
-                                <img class="select-icon" src="/images/bad.png" />
-                                break;
-                            case 2:
-                                <img class="select-icon" src="/images/soso.png" />
-                                break;
-                            case 3:
-                                <img class="select-icon" src="/images/fine.png">
-                                break;
-                            case 4:
-                                <img class="select-icon" src="/images/good.png" />
-                                break;
-                            case 5:
-                                <img class="select-icon" src="/images/great.png" />
-                                break;
-                        }
-                    }
-                }
-                @foreach (var itemA in Model.Attendances)
-                {
-                    @if (item.ReportId.Equals(itemA.ReportId))
-                    {
-                        <a asp-action="Details" asp-route-id="@item.ReportId" class="btn btn-warning">詳細</a>
-                    }
-                }
-            </div>
+    });
+
+
+    function startSignalRConnection(connection) {
+        connection.start()
+            .then(function () {
+                console.log("SignalR connection established");
+            })
+            .catch(function (err) {
+                console.error(err.toString());
+            });
+    }
+
+    function showStoredNotifications() {
+        var savedNotifications = localStorage.getItem('userNotifications');
+        if (savedNotifications) {
+            userNotifications = JSON.parse(savedNotifications);
+            var userNotificationsArray = userNotifications[loginUserId];
+            if (userNotificationsArray) {
+                userNotificationsArray.forEach(function (dateReportID) {
+                    showNotification(dateReportID);
+                });
+            }
         }
     }
+
+    function showNotification(dateReportID) {
+        if (!openNotifications.includes(dateReportID)) {
+            var date = new Date(dateReportID);
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            var resultString = year + "年" + month + "月" + day + "日";
+            var notiContent = resultString + "の報告書に既読しました。詳細は詳細ボタンをクリックしてみて下さい";
+
+            var notificationDiv = document.createElement('div');
+            notificationDiv.className = 'notification';
+            notificationDiv.dataset.id = dateReportID;
+            notificationDiv.innerHTML = `
+                <span class="closeBtn">&times;</span>
+                <p>${notiContent}</p>
+            `;
+            notificationsContainer.appendChild(notificationDiv);
+            notificationDiv.style.display = 'block';
+
+            var closeBtn = notificationDiv.querySelector('.closeBtn');
+            closeBtn.addEventListener('click', function () {
+                closeNotification(notificationDiv);
+            });
+
+            openNotifications.push(dateReportID);
+
+            saveNotificationsState();
+        }
+    }
+
+    function closeNotification(notificationDiv) {
+        if (notificationDiv) {
+            notificationDiv.style.display = 'none';
+            var dateReportID = notificationDiv.dataset.id;
+            openNotifications = openNotifications.filter(function (id) {
+                return id !== dateReportID;
+            });
+            saveNotificationsState();
+        }
+    }
+
+    function saveNotificationsState() {
+        userNotifications[loginUserId] = openNotifications;
+        localStorage.setItem('userNotifications', JSON.stringify(userNotifications));
+    }
+});
+
+
+</script>
+
+
+
+
+@foreach (var item in Model.Reports.OrderByDescending(x => x.Date))
+{
+    var count = 0;
+    @if (Model.Feedbacks != null)
+    {
+        @foreach (var fb in Model.Feedbacks)
+        {
+            @if (fb.ReportId == item.ReportId)
+            {
+                count += 1;
+            }
+        }
+    }
+    @if (count == 0)
+    {
+                    <div class="f-card">
+            @{
+                string dow = item.Date.ToString("ddd");
+            }
+                        <h4>@item.Date.Year 年 @item.Date.Month 月 @item.Date.Day 日 (@dow)</h4>
+            @foreach (var itemA in Model.Attendances)
+            {
+                @if (item.ReportId.Equals(itemA.ReportId))
+                {
+                                        <h4>@itemA.Status</h4>
+                    @switch (itemA.HealthRating)
+                    {
+                        case 1:
+                                                        <img class="select-icon" src="/images/bad.png" />
+                            break;
+                        case 2:
+                                                        <img class="select-icon" src="/images/soso.png" />
+                            break;
+                        case 3:
+                                                        <img class="select-icon" src="/images/fine.png">
+                            break;
+                        case 4:
+                                                        <img class="select-icon" src="/images/good.png" />
+                            break;
+                        case 5:
+                                                        <img class="select-icon" src="/images/great.png" />
+                            break;
+                    }
+                }
+            }
+            @foreach (var itemA in Model.Attendances)
+            {
+                @if (item.ReportId.Equals(itemA.ReportId))
+                {
+                                        <a asp-action="Details" asp-route-id="@item.ReportId" class="btn btn-warning">詳細</a>
+                }
+            }
+                    </div>
+    }
+    else
+    {
+                    <div class="r-card">
+            @{
+                string dow = item.Date.ToString("ddd");
+            }
+                        <h4>@item.Date.Year 年 @item.Date.Month 月 @item.Date.Day 日 (@dow)</h4>
+            @foreach (var itemA in Model.Attendances)
+            {
+                @if (item.ReportId.Equals(itemA.ReportId))
+                {
+                                                <h4>@itemA.Status</h4>
+                    @switch (itemA.HealthRating)
+                    {
+                        case 1:
+                                                        <img class="select-icon" src="/images/bad.png" />
+                            break;
+                        case 2:
+                                                        <img class="select-icon" src="/images/soso.png" />
+                            break;
+                        case 3:
+                                                        <img class="select-icon" src="/images/fine.png">
+                            break;
+                        case 4:
+                                                        <img class="select-icon" src="/images/good.png" />
+                            break;
+                        case 5:
+                                                        <img class="select-icon" src="/images/great.png" />
+                            break;
+                    }
+                }
+            }
+            @foreach (var itemA in Model.Attendances)
+            {
+                @if (item.ReportId.Equals(itemA.ReportId))
+                {
+                                        <a asp-action="Details" asp-route-id="@item.ReportId" class="btn btn-warning">詳細</a>
+                }
+            }
+                    </div>
+    }
+}
 </div>
 
 <script>
@@ -123,3 +313,8 @@
         }
     }
 </script>
+
+
+<script type="module" src="/lib/microsoft/signalr/dist/browser/signalr.js" asp-append-version="true"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
